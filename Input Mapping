@@ -1,0 +1,16 @@
+accountTypeMapping = {"Analyst":"Other","AU":"Other","Customer":"Other","Distributor":"Distributor/Aftermarket","Integrator":"Distributor/Aftermarket","Investor":"Other","NULL":"Other","Partner":"Other","Reseller":"Distributor/Aftermarket"};
+accounts = zoho.crm.getRecords("Accounts");
+for each  account in accounts
+{
+	accountId = account.get("id");
+	accountType = account.get("Account_Type");
+	if(accountTypeMapping.containsKey(accountType))
+	{
+		newAccountType = accountTypeMapping.get(accountType);
+	}
+	else
+	{
+		newAccountType = "Other";
+	}
+	zoho.crm.updateRecord("Accounts",accountId,{"Account_Type_v2":newAccountType});
+}
