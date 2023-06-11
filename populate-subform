@@ -1,0 +1,49 @@
+med_records = Medication_Intake_Form[Your_Name == input.Your_Name];
+patient = input.Your_Name;
+insert into Daily_Medication_Check_In
+[
+	Added_User=zoho.loginuser
+	Medication_Check_In="Initial Check In"
+	Your_Name=patient
+]
+daily_record = Daily_Medication_Check_In[Your_Name == input.Your_Name];
+for each  line_item in med_records.Medication_List
+{
+	row1 = Daily_Medication_Check_In.Med_Count();
+	row1.Medication=line_item.Add_Medication;
+	row1.Daily_Count=line_item.Intake_Quantity;
+	rowcollection = Collection();
+	rowcollection.insert(row1);
+	daily_record.Med_Count.insert(rowcollection);
+}
+for each  loop in Daily_Medication_Check_In[Your_Name == input.Your_Name]
+{
+	distvar = daily_record.distinct(Med_Count);
+}
+fet = Daily_Medication_Check_In[Your_Name == input.Your_Name];
+lis = fet.Med_Count.Medication.getAll().toList();
+if ( lis.contains(input.Medication_List.Add_Medication)== true ) 
+{
+for each  rec in fet.Med_Count
+{
+	 if(rec.Medication == 1)
+	 {
+	  rec.Daily_Count = 1;
+	 }
+}
+ }
+else 
+{
+ col=Collection();
+ for each rec1 in fet.Med_Count
+    {
+  row1 = Daily_Medication_Check_In.Med_Count();
+  row1.Medication = rec1.Add_Medication;
+  row1.Daily_Count=rec1.Intake_Quantity;
+  col.insert(roww);
+    } 
+ row2 = Daily_Medication_Check_In.Med_Count();
+  row2.Medication=input.Medication_List.Add_Medication;
+ row2.Daily_Count=input.Medication_List.Intake_Quantity;
+ fet.Medication_List.insert(col,row2);
+}
